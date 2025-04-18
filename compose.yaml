@@ -1,0 +1,10 @@
+﻿services:
+  passwordnow:
+    container_name: "PasswordNow"
+    image: passwordnow
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8080"
+      - "8001:8081"
