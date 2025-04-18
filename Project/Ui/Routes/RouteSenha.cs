@@ -9,12 +9,10 @@ public static class PasswordNow
     {
         app.MapPost("", (SenhaRequest senhaRequest, SenhaService senhaService) =>
         {
-            var resp = senhaService.GerarSenha(senhaRequest.Comprimento, senhaRequest.Maiuscula,
+            List<string> resp = senhaService.GerarSenha(senhaRequest.Quantidade , senhaRequest.Comprimento, senhaRequest.Maiuscula,
                 senhaRequest.Minuscula, senhaRequest.Numero, senhaRequest.Simbulo);
-            if (resp == "400")
-            {
-                return Results.BadRequest("Todas as opções estão desabilitadas. Escolha ao menos uma!");
-            }
+            if (resp[0] == "400")
+            { return Results.BadRequest("Todas as opções estão desabilitadas. Escolha ao menos uma!"); }
             
             return Results.Ok(resp);
         });

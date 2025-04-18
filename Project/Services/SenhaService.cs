@@ -4,18 +4,21 @@ public class SenhaService
 {
     private readonly Random _random = new();
     
-    public string GerarSenha(int comprimento, bool maiusculas, bool minusculas, bool numero, bool simbulo)
+    public List<string> GerarSenha(int quantidade, int comprimento, bool maiusculas, bool minusculas, bool numero, bool simbulo)
     {
+        List<string> listaSenhas = new List<string>();
+        
         string a = "abcdefghijklmnopqrstuvwxyz";
         string A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         string num = "0123456789";
         string simbulos = "!@#$%&";
             
         string caracteresPermitidos = "";
-        string senha = "";
 
         if (maiusculas == false && minusculas == false && numero == false && simbulo == false)
-        { return StatusCodes.Status400BadRequest.ToString(); }
+        { listaSenhas.Add(StatusCodes.Status400BadRequest.ToString()) ; return listaSenhas; }
+        if (quantidade == 1) { quantidade -= 1; }
+        if (comprimento == 1) { comprimento -= 1; }
         
         var opcoes = new List<(bool habilitados, string caracteres)>
         {
@@ -29,13 +32,18 @@ public class SenhaService
         {
             if (opcao.habilitados) caracteresPermitidos += opcao.caracteres;
         }
-        
-        for (int i = 0; i <= comprimento; i++)
+
+        for (int i = 0; i <= quantidade; i++)
         {
-            int indiceAleatorio = _random.Next(caracteresPermitidos.Length);
-            senha += caracteresPermitidos[indiceAleatorio];
+            string senha = "";
+            for (int x = 0; x <= comprimento; x++)
+            {
+                int indiceAleatorio = _random.Next(caracteresPermitidos.Length);
+                senha += caracteresPermitidos[indiceAleatorio];
+            }
+            listaSenhas.Add(senha);
         }
         
-        return senha;
+        return listaSenhas;
     }
 }
