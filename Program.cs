@@ -10,6 +10,17 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<SenhaService>();
 
+//Configurando serviço de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policyBuilder =>
+    {
+        policyBuilder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,6 +32,9 @@ if (app.Environment.IsDevelopment())
 
 //EndPoint
 app.GerarSenha();
+
+//Habilita o CORS
+app.UseCors();
 
 app.UseHttpsRedirection();
 app.Run();
